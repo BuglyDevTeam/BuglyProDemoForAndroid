@@ -17,7 +17,7 @@ def getVersion(Properties properties){
 def initGradleEnvironment() {
     // get bugly-pro version
     if (hasProperty("VERSION")) {
-        def version = hasProperty("VERSION")
+        def version = getProperty("VERSION")
         if (hasProperty("BUILD_ID") && !hasProperty("OFFICIAL")) {
             def (A, B, C, D) = version.tokenize('.')
             version="$A.$B.$C.$BUILD_ID"
