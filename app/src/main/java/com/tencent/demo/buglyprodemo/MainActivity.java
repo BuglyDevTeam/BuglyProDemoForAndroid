@@ -3,9 +3,13 @@ package com.tencent.demo.buglyprodemo;
 import android.app.Application;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import com.tencent.bugly.library.Bugly;
 import com.tencent.bugly.library.BuglyBuilder;
+import com.tencent.bugly.library.BuglyConstants;
 import com.tencent.bugly.library.BuglyLogLevel;
 import com.tencent.bugly.library.BuglyMonitorName;
 
@@ -15,7 +19,37 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initButton();
         initBugly();
+    }
+
+    private void initButton() {
+        Button button = (Button)findViewById(R.id.button1);
+        button.setText("test java crash");
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bugly.testCrash(BuglyConstants.JAVA_CRASH);
+            }
+        });
+
+        button = (Button)findViewById(R.id.button2);
+        button.setText("test native crash");
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bugly.testCrash(BuglyConstants.NATIVE_CRASH);
+            }
+        });
+
+        button = (Button)findViewById(R.id.button3);
+        button.setText("test anr");
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bugly.testCrash(BuglyConstants.ANR_CRASH);
+            }
+        });
     }
 
     private void initBugly() {
