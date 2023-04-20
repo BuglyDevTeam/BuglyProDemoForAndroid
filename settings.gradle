@@ -1,19 +1,6 @@
 include ':app'
 rootProject.name = "BuglyProDemo"
 
-def getVersion(Properties properties){
-    def version = hasProperty("VERSION") ? VERSION : properties.getProperty('global.version')
-    if (version == "test" || version == "") {
-        version = properties.getProperty('global.version')
-    }
-    if (hasProperty("BUILD_ID") && !hasProperty("OFFICIAL")) {
-        def (A, B, C, D) = version.tokenize('.')
-        version="$A.$B.$C.$BUILD_ID"
-    }
-    version = hasProperty("OFFICIAL") ? version : version + "-SNAPSHOT"
-    return version
-}
-
 def initGradleEnvironment() {
     // get bugly-pro version
     if (hasProperty("VERSION")) {
