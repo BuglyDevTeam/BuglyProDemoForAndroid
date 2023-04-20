@@ -1,0 +1,32 @@
+include ':app'
+rootProject.name = "BuglyProDemo"
+
+def getVersion(Properties properties){
+    def version = hasProperty("VERSION") ? VERSION : properties.getProperty('global.version')
+    if (version == "test" || version == "") {
+        version = properties.getProperty('global.version')
+    }
+    if (hasProperty("BUILD_ID") && !hasProperty("OFFICIAL")) {
+        def (A, B, C, D) = version.tokenize('.')
+        version="$A.$B.$C.$BUILD_ID"
+    }
+    version = hasProperty("OFFICIAL") ? version : version + "-SNAPSHOT"
+    return version
+}
+
+def initGradleEnvironment() {
+    // get bugly-pro version
+    if (hasProperty("VERSION")) {
+        def version = hasProperty("VERSION")
+        if (hasProperty("BUILD_ID") && !hasProperty("OFFICIAL")) {
+            def (A, B, C, D) = version.tokenize('.')
+            version="$A.$B.$C.$BUILD_ID"
+        }
+        gradle.ext.bugly_pro_version = hasProperty("OFFICIAL") ? version : version + "-SNAPSHOT"
+    } else {
+        gradle.ext.bugly_pro_version = "4.3.0.420-SNAPSHOT"
+    }
+    println "gradle.ext.bugly_pro_version: " + gradle.ext.bugly_pro_version
+}
+
+initGradleEnvironment()
