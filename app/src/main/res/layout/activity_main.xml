@@ -1,80 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".MainActivity">
+  tools:context="com.tencent.demo.buglyprodemo.MainActivity">
 
-  <TextView
-    android:id="@+id/text_view"
-    android:layout_width="wrap_content"
+  <LinearLayout
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="24dp"
-    android:text="Hello World!"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
-  <Button
-    android:id="@+id/button1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Button 1"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toStartOf="@+id/button2"
-    app:layout_constraintTop_toBottomOf="@+id/text_view"
-    app:layout_constraintBottom_toTopOf="@+id/button3" />
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_marginLeft="10dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginRight="10dp"
+      android:orientation="horizontal">
 
-  <Button
-    android:id="@+id/button2"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Button 2"
-    app:layout_constraintStart_toEndOf="@+id/button1"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/text_view"
-    app:layout_constraintBottom_toTopOf="@+id/button4" />
+      <Button
+        android:id="@+id/test_java_crash"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="测试Java崩溃"
+        android:textAllCaps="false"/>
 
-  <Button
-    android:id="@+id/button3"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Button 3"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toStartOf="@+id/button4"
-    app:layout_constraintTop_toBottomOf="@+id/button1"
-    app:layout_constraintBottom_toTopOf="@+id/button5" />
+      <Button
+        android:id="@+id/test_native_crash"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"
+        android:text="测试Native崩溃"
+        android:layout_marginStart="10dp"
+        android:textAllCaps="false"/>
 
-  <Button
-    android:id="@+id/button4"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Button 4"
-    app:layout_constraintStart_toEndOf="@+id/button3"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/button2"
-    app:layout_constraintBottom_toTopOf="@+id/button6" />
+    </LinearLayout>
 
-  <Button
-    android:id="@+id/button5"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Button 5"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toStartOf="@+id/button6"
-    app:layout_constraintTop_toBottomOf="@+id/button3"
-    app:layout_constraintBottom_toBottomOf="parent" />
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_marginLeft="10dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginRight="10dp"
+      android:orientation="horizontal">
 
-  <Button
-    android:id="@+id/button6"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Button 6"
-    app:layout_constraintStart_toEndOf="@+id/button5"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/button4"
-    app:layout_constraintBottom_toBottomOf="parent" />
+      <Button
+        android:id="@+id/test_anr"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="测试ANR"
+        android:textAllCaps="false"/>
 
+      <Button
+        android:id="@+id/test_oom"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"
+        android:text="测试OOM"
+        android:layout_marginStart="10dp"
+        android:textAllCaps="false"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_marginLeft="10dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginRight="10dp"
+      android:orientation="horizontal">
+
+      <Button
+        android:id="@+id/test_error1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="测试Java捕获异常"
+        android:textAllCaps="false"/>
+
+      <Button
+        android:id="@+id/test_error2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"
+        android:text="测试自定义错误"
+        android:layout_marginStart="10dp"
+        android:textAllCaps="false"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_marginLeft="10dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginRight="10dp"
+      android:orientation="horizontal">
+
+      <Button
+        android:id="@+id/test_long_lag"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="测试长卡顿"
+        android:textAllCaps="false"/>
+
+      <Button
+        android:id="@+id/test_looper_stack"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"
+        android:text="测试滑动卡顿"
+        android:layout_marginStart="10dp"
+        android:textAllCaps="false"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_marginLeft="10dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginRight="10dp"
+      android:orientation="horizontal">
+
+      <Button
+        android:id="@+id/test_activity_leak"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="测试Activity泄露"
+        android:textAllCaps="false"/>
+
+      <Button
+        android:id="@+id/test_java_leak"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:text="测试Java对象泄露"
+        android:layout_marginStart="10dp"
+        android:textAllCaps="false"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:layout_marginLeft="10dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginRight="10dp"
+      android:orientation="horizontal">
+
+      <Button
+        android:id="@+id/test_fragment_leak"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="测试Fragment泄露"
+        android:textAllCaps="false"/>
+
+      <Button
+        android:id="@+id/test_big_bitmap"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:text="测试大图分析"
+        android:layout_marginStart="10dp"
+        android:textAllCaps="false"/>
+
+    </LinearLayout>
+
+  </LinearLayout>
+</ScrollView>
