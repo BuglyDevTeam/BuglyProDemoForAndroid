@@ -79,7 +79,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showToast("测试Java崩溃");
-                Bugly.testCrash(BuglyConstants.JAVA_CRASH);
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Bugly.testCrash(BuglyConstants.JAVA_CRASH);
+                    }
+                });
+                thread.start();
             }
         });
 
@@ -183,27 +189,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String getAppVersion() {
-        return "4.5." + random.nextInt(9);
+        return "1.0.0";
     }
 
     private String getBuildNumber() {
-        return String.valueOf(random.nextInt(100));
+        return "1";
     }
 
     private void initBugly() {
         Application application = getApplication();
         String appKey = "4b9b0739-1c9b-46a7-95b5-0c4aaff4e00a";
         String appID = "3b2e6d73d3";
-
         BuglyBuilder buglyBuilder = new BuglyBuilder(appID, appKey);
-        buglyBuilder.appVersion = getAppVersion();
-        buglyBuilder.buildNumber = getBuildNumber();
+
         buglyBuilder.userId = getUserID();
         buglyBuilder.uniqueId = getDeviceID();
+        buglyBuilder.buildNumber = getBuildNumber();
+        buglyBuilder.appVersion = getAppVersion();
         buglyBuilder.appVersionType = BuglyAppVersionMode.DEBUG;
         buglyBuilder.deviceModel = Build.MODEL;
-        buglyBuilder.enableCrashProtect = true;
         buglyBuilder.logLevel = BuglyLogLevel.LEVEL_DEBUG;
+
+        buglyBuilder.debugMode = true;
+        buglyBuilder.enableCrashProtect = true;
+        buglyBuilder.enableAllThreadStackAnr = true;
+        buglyBuilder.enableAllThreadStackCrash = true;
 
         Bugly.init(application, buglyBuilder);
     }
@@ -311,18 +321,45 @@ public class MainActivity extends AppCompatActivity {
 
     private void testJavaCatchError() {
         showToast("测试Java捕获错误");
-        String content = "a illegal string.";
-        try {
-            JSONObject jsonObject = new JSONObject(content);
-            double price  = jsonObject.getDouble("price");
-        } catch (Throwable t) {
-            Bugly.handleCatchException(Thread.currentThread(), t,
-                    "testJavaCatchError", content.getBytes(), true);
-        }
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String content = "a illegal string.";
+                try {
+                    JSONObject jsonObject = new JSONObject(content);
+                    double price  = jsonObject.getDouble("price");
+                } catch (Throwable t) {
+                    Bugly.handleCatchException(Thread.currentThread(), t,
+                            "testJavaCatchError", content.getBytes(), true);
+                }
+            }
+        });
+        thread.start();
+        showToast("Java捕获错误上报成功！");
     }
 
     private void testCustomError() {
         showToast("测试自定义错误");
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Bugly.postException(4, "Flutter Exception",
+                    "Framework ERROR - Null check operator used on a null value",
+                    "ScrollPosition.minScrollExtent (package:flutter/src/widgets/scroll_position.dart:139)\n" +
+                        "ScrollPosition._updateSemanticActions (package:flutter/src/widgets/scroll_position.dart:663)\n" +
+                        "ScrollPosition.notifyListeners (package:flutter/src/widgets/scroll_position.dart:967)\n" +
+                        "ScrollPosition.forcePixels (package:flutter/src/widgets/scroll_position.dart:380)\n" +
+                        "ScrollPositionWithSingleContext.jumpTo (package:flutter/src/widgets/scroll_position_with_single_context.dart:198)\n" +
+                        "ScrollController.jumpTo (package:flutter/src/widgets/scroll_controller.dart:173)\n" +
+                        "_MatchRecommendWidgetState._buildList (package:qflutter_match_friend/src/pages/match/widget/match_recommend_widget.dart:82)\n" +
+                        "_MatchRecommendWidgetState.build.<anonymous closure> (package:qflutter_match_friend/src/pages/match/widget/match_recommend_widget.dart:68)\n" +
+                        "Consumer.buildWithChild (package:provider/src/consumer.dart:180)\n" +
+                        "SingleChildStatelessWidget.build (package:nested/nested.dart:259)\n" +
+                        "StatelessElement.build (package:flutter/src/widgets/framework.dart:4739)", null);
+            }
+        });
+        thread.start();
+        showToast("自定义错误上报成功！");
     }
 
     private void showToast(String msg) {
