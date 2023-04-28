@@ -12,6 +12,10 @@ import com.tencent.rmonitor.base.plugin.listener.ICustomDataCollector;
 import com.tencent.rmonitor.base.plugin.listener.ICustomDataCollectorForIssue;
 import com.tencent.rmonitor.custom.ICustomDataEditor;
 import com.tencent.rmonitor.custom.ICustomDataEditorForIssue;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 import java.util.UUID;
 
@@ -26,7 +30,7 @@ public class BuglyWrapper {
 
     private final Random random = new Random(System.currentTimeMillis());
 
-    private static BuglyWrapper instance = null;
+    private static volatile BuglyWrapper instance = null;
 
     public static BuglyWrapper getInstance() {
         if (instance == null) {
@@ -67,6 +71,12 @@ public class BuglyWrapper {
 
         Bugly.init(application, buglyBuilder);
 
+        // 设置质量监控的自定义数据
+        Bugly.putUserData(application, "testKey", "testValue");
+        // 设置自定义文件
+        File file = getCustomFilePath(application);
+        Bugly.setAdditionalAttachmentPaths(new String[]{file.getPath()});
+
         // 设置性能监控的自定义数据采集器
         Bugly.addCustomDataCollector(customDataCollectorForIssue);
         Bugly.addCustomDataCollector(customDataCollectorForMetric);
@@ -88,7 +98,25 @@ public class BuglyWrapper {
         return "1";
     }
 
-    private ICustomDataCollector customDataCollectorForMetric = new ICustomDataCollector() {
+    private File getCustomFilePath(Application application) {
+        // 生成一个本地自定义文件示例
+        byte[] bytes = new byte[1024];
+        String testData = "This is a custom file test, you can write any content in files.\n"
+                + "Make sure files after zip smaller than 10MB!";
+        File filesDir = application.getFilesDir();
+        File file = new File(filesDir, "test.txt");
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(file);
+            writer.write(testData);
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return file;
+    }
+
+    private final ICustomDataCollector customDataCollectorForMetric = new ICustomDataCollector() {
         @Override
         public void collectCustomData(String pluginName, String scene, ICustomDataEditor editor) {
             if (BuglyMonitorName.FLUENCY_METRIC.equals(pluginName)) {
@@ -101,7 +129,7 @@ public class BuglyWrapper {
         }
     };
 
-    private ICustomDataCollectorForIssue customDataCollectorForIssue = new ICustomDataCollectorForIssue() {
+    private final ICustomDataCollectorForIssue customDataCollectorForIssue = new ICustomDataCollectorForIssue() {
         @Override
         public void collectCustomData(String pluginName, String scene, ICustomDataEditorForIssue editor) {
             if (BuglyMonitorName.LOOPER_STACK.equals(pluginName)) {
