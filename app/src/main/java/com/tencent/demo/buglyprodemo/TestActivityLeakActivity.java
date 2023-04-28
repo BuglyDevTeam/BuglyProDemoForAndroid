@@ -21,6 +21,12 @@ public class TestActivityLeakActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BuglyWrapper.getInstance().changeResumedActivity(this.getClass().getSimpleName());
+    }
+
     private void triggerLeak() {
         LeakKeeper.leakObj(this);
         try {

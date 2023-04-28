@@ -1,8 +1,6 @@
 package com.tencent.demo.buglyprodemo;
 
-import android.app.Application;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -13,10 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.tencent.bugly.launch.AppLaunchProxy;
 import com.tencent.bugly.library.Bugly;
-import com.tencent.bugly.library.BuglyAppVersionMode;
-import com.tencent.bugly.library.BuglyBuilder;
 import com.tencent.bugly.library.BuglyConstants;
-import com.tencent.bugly.library.BuglyLogLevel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -34,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initBugly();
         initButton();
         handler.postDelayed(new Runnable() {
             @Override
@@ -46,6 +40,12 @@ public class MainActivity extends AppCompatActivity {
                 AppLaunchProxy.getAppLaunch().reportAppFullLaunch();
             }
         }, 500L);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BuglyWrapper.getInstance().changeResumedActivity(this.getClass().getSimpleName());
     }
 
     private void costJobOne() {
@@ -178,44 +178,6 @@ public class MainActivity extends AppCompatActivity {
                 testBigBitmap();
             }
         });
-    }
-
-    private String getUserID() {
-        return "10000" + random.nextInt();
-    }
-
-    private String getDeviceID() {
-        return UUID.randomUUID().toString();
-    }
-
-    private String getAppVersion() {
-        return "1.0.0";
-    }
-
-    private String getBuildNumber() {
-        return "1";
-    }
-
-    private void initBugly() {
-        Application application = getApplication();
-        String appKey = "4b9b0739-1c9b-46a7-95b5-0c4aaff4e00a";
-        String appID = "3b2e6d73d3";
-        BuglyBuilder buglyBuilder = new BuglyBuilder(appID, appKey);
-
-        buglyBuilder.userId = getUserID();
-        buglyBuilder.uniqueId = getDeviceID();
-        buglyBuilder.buildNumber = getBuildNumber();
-        buglyBuilder.appVersion = getAppVersion();
-        buglyBuilder.appVersionType = BuglyAppVersionMode.DEBUG;
-        buglyBuilder.deviceModel = Build.MODEL;
-        buglyBuilder.logLevel = BuglyLogLevel.LEVEL_DEBUG;
-
-        buglyBuilder.debugMode = true;
-        buglyBuilder.enableCrashProtect = true;
-        buglyBuilder.enableAllThreadStackAnr = true;
-        buglyBuilder.enableAllThreadStackCrash = true;
-
-        Bugly.init(application, buglyBuilder);
     }
 
     private void testBigBitmap() {

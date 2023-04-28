@@ -51,6 +51,12 @@ public class TestLagActivity extends ListActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        BuglyWrapper.getInstance().changeResumedActivity(this.getClass().getSimpleName());
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         Bugly.getGlobalCustomDataEditor().putStringParam(ICustomDataEditor.STRING_PARAM_1,

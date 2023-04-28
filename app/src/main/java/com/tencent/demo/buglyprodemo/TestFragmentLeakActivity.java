@@ -17,6 +17,12 @@ public class TestFragmentLeakActivity extends AppCompatActivity {
         initView();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BuglyWrapper.getInstance().changeResumedActivity(this.getClass().getSimpleName());
+    }
+
     private void initView() {
         Button btLeft = findViewById(R.id.bt_left);
         Button btRight = findViewById(R.id.bt_right);

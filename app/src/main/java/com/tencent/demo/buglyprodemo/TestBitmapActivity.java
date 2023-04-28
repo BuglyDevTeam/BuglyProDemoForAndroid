@@ -10,4 +10,10 @@ public class TestBitmapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_bitmap);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BuglyWrapper.getInstance().changeResumedActivity(this.getClass().getSimpleName());
+    }
 }
