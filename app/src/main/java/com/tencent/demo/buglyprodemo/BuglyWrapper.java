@@ -52,8 +52,8 @@ public class BuglyWrapper {
     }
 
     public void initBugly(Application application) {
-        String appKey = "4b9b0739-1c9b-46a7-95b5-0c4aaff4e00a";
-        String appID = "3b2e6d73d3";
+        String appKey = "1e5ab6b3-b6fa-4f9b-a3c2-743d31dffe86";
+        String appID = "a278f01047";
         BuglyBuilder buglyBuilder = new BuglyBuilder(appID, appKey);
 
         buglyBuilder.userId = getUserID();
