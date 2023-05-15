@@ -87,7 +87,7 @@ public class BuglyWrapper {
     }
 
     private String getDeviceID() {
-        return UUID.randomUUID().toString();
+        return "test-device-id";
     }
 
     private String getAppVersion() {
