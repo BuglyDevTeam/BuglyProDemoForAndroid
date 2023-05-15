@@ -1,8 +1,12 @@
 package com.tencent.demo.buglyprodemo;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Debug;
+import android.text.TextUtils;
+
 import com.tencent.bugly.library.Bugly;
 import com.tencent.bugly.library.BuglyAppVersionMode;
 import com.tencent.bugly.library.BuglyBuilder;
@@ -57,7 +61,7 @@ public class BuglyWrapper {
         BuglyBuilder buglyBuilder = new BuglyBuilder(appID, appKey);
 
         buglyBuilder.userId = getUserID();
-        buglyBuilder.uniqueId = getDeviceID();
+        buglyBuilder.uniqueId = getDeviceID(application);
         buglyBuilder.buildNumber = getBuildNumber();
         buglyBuilder.appVersion = getAppVersion();
         buglyBuilder.appVersionType = BuglyAppVersionMode.DEBUG;
@@ -86,8 +90,13 @@ public class BuglyWrapper {
         return "10000" + random.nextInt();
     }
 
-    private String getDeviceID() {
-        return "test-device-id";
+    private String getDeviceID(Application application) {
+        String deviceId = getSpValue(application, "device_id");
+        if (TextUtils.isEmpty(deviceId)) {
+            deviceId = UUID.randomUUID().toString();
+            saveSpValue(application, "device_id", deviceId);
+        }
+        return deviceId;
     }
 
     private String getAppVersion() {
@@ -151,4 +160,16 @@ public class BuglyWrapper {
             }
         }
     };
+
+    private String getSpValue(Application application, String key) {
+        SharedPreferences sp = application.getSharedPreferences("bugly_prefs", Context.MODE_PRIVATE);
+        return sp.getString(key, "");
+    }
+
+    private void saveSpValue(Application application, String key, String value) {
+        SharedPreferences sp = application.getSharedPreferences("bugly_prefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(key ,value);
+        editor.apply();
+    }
 }
