@@ -11,7 +11,7 @@ def initGradleEnvironment() {
         }
         gradle.ext.bugly_pro_version = hasProperty("OFFICIAL") ? version : version + "-SNAPSHOT"
     } else {
-        gradle.ext.bugly_pro_version = "4.3.0.28-SNAPSHOT"
+        gradle.ext.bugly_pro_version = "4.3.0.29-SNAPSHOT"
     }
     println "gradle.ext.bugly_pro_version: " + gradle.ext.bugly_pro_version
 }
