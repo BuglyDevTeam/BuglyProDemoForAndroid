@@ -18,7 +18,6 @@ import com.tencent.rmonitor.custom.ICustomDataEditorForIssue;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Random;
 import java.util.UUID;
 
 public class BuglyWrapper {
@@ -29,8 +28,6 @@ public class BuglyWrapper {
     private static final String KEY_PSS = ICustomDataEditor.NUMBER_PARAM_1;
     private static final String KEY_GLOBAL_ALLOC_SIZE = ICustomDataEditor.NUMBER_PARAM_2;
     private static final String KEY_GLOBAL_ALLOC_COUNT = ICustomDataEditor.NUMBER_PARAM_3;
-
-    private final Random random = new Random(System.currentTimeMillis());
 
     private static volatile BuglyWrapper instance = null;
 
@@ -57,14 +54,6 @@ public class BuglyWrapper {
         // Android体验Demo
         String appKey = "1e5ab6b3-b6fa-4f9b-a3c2-743d31dffe86";
         String appID = "a278f01047";
-
-        // 测试流量1
-//        String appKey = "7558e98e-2280-4889-9805-25fcedfd21b7";
-//        String appID = "75f820edad";
-
-        // 测试流量2
-//        String appKey = "5d2207fc-aabe-4a4a-abc0-9f4c1b848b1d";
-//        String appID = "4a01620959";
 
         BuglyBuilder buglyBuilder = new BuglyBuilder(appID, appKey);
 

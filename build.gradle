@@ -3,9 +3,6 @@ buildscript {
     repositories {
         google()
         jcenter()
-        // maven 仓库
-        maven { url 'https://mirrors.tencent.com/repository/maven/thirdparty'}
-        maven { url 'https://mirrors.tencent.com/repository/maven/thirdparty-snapshots' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.0"
@@ -19,9 +16,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        // maven 仓库
-        maven { url 'https://mirrors.tencent.com/repository/maven/thirdparty'}
-        maven { url 'https://mirrors.tencent.com/repository/maven/thirdparty-snapshots' }
     }
 }
 
