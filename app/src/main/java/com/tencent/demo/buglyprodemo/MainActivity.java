@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -36,6 +37,18 @@ public class MainActivity extends AppCompatActivity {
                 final int value = random.nextInt(4);
                 if (value <= 2) {
                     costJobOne();
+                }
+                if (random.nextBoolean()) {
+                    costJobOne();
+                }
+                if (random.nextBoolean()) {
+                    costJobTwo(null);
+                }
+                if (random.nextBoolean()) {
+                    callFunctionC();
+                }
+                if (random.nextBoolean()) {
+                    callFunctionE();
                 }
                 AppLaunchProxy.getAppLaunch().reportAppFullLaunch();
             }
@@ -82,7 +95,9 @@ public class MainActivity extends AppCompatActivity {
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Bugly.testCrash(BuglyConstants.JAVA_CRASH);
+                        // testAndroidX();
+                        // Bugly.testCrash(BuglyConstants.JAVA_CRASH);
+                        testJavaCrash();
                     }
                 });
                 thread.start();
@@ -180,6 +195,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void testJavaCrash() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("one");
+        list.add("two");
+        list.add("three");
+        StringBuilder full = new StringBuilder();
+        for(int i = 0; i < 4; i++) {
+            String value = list.get(i);
+            full.append(",").append(value);
+        }
+        Log.i("Test", full.toString());
+    }
+
     private void testBigBitmap() {
         showToast("测试大图分析");
         Intent intent = new Intent(MainActivity.this, TestBitmapActivity.class);
@@ -268,17 +296,54 @@ public class MainActivity extends AppCompatActivity {
     private void testLongLag() {
         showToast("测试长卡顿");
         sleep(200);
-        callFunctionA();
-        callFunctionB();
+        if (random.nextBoolean()) {
+            callFunctionA();
+        }
+        if (random.nextBoolean()) {
+            callFunctionB("testLongLag");
+        }
+        if (random.nextBoolean()) {
+            callFunctionC();
+        }
+        if (random.nextBoolean()) {
+            callFunctionD("testLongLag");
+        }
+        if (random.nextBoolean()) {
+            callFunctionE();
+        }
     }
 
     private void callFunctionA() {
+        AppLaunchProxy.getAppLaunch().spanStart("FunctionA", null);
         sleep(400);
-        callFunctionB();
+        callFunctionB("FunctionA");
+        AppLaunchProxy.getAppLaunch().spanEnd("FunctionB");
     }
 
-    private void callFunctionB() {
+    private void callFunctionB(String parent) {
+        AppLaunchProxy.getAppLaunch().spanStart("FunctionB", parent);
         sleep(300);
+        AppLaunchProxy.getAppLaunch().spanEnd("FunctionB");
+    }
+
+    private void callFunctionC() {
+        AppLaunchProxy.getAppLaunch().spanStart("FunctionC", null);
+        sleep(300);
+        callFunctionD("FunctionC");
+        AppLaunchProxy.getAppLaunch().spanEnd("FunctionC");
+    }
+
+    private void callFunctionD(String parent) {
+        AppLaunchProxy.getAppLaunch().spanStart("FunctionD", parent);
+        sleep(200);
+        AppLaunchProxy.getAppLaunch().spanEnd("FunctionD");
+    }
+
+    private void callFunctionE() {
+        AppLaunchProxy.getAppLaunch().spanStart("FunctionE", null);
+        sleep(200);
+        callFunctionA();
+        AppLaunchProxy.getAppLaunch().spanEnd("FunctionE");
     }
 
     private void testJavaCatchError() {
@@ -348,5 +413,12 @@ public class MainActivity extends AppCompatActivity {
         } catch (Throwable t) {
             Bugly.handleCatchException(Thread.currentThread(), t, "sleep", null, false);
         }
+    }
+
+    private static void testAndroidX() {
+        androidx.collection.LruCache<String, String> cache =
+                new androidx.collection.LruCache<String, String>(12);
+        cache.put("Good", "Name");
+        cache.resize(-1);
     }
 }

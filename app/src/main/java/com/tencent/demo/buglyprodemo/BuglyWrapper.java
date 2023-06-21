@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Debug;
 import android.text.TextUtils;
-
 import com.tencent.bugly.library.Bugly;
 import com.tencent.bugly.library.BuglyAppVersionMode;
 import com.tencent.bugly.library.BuglyBuilder;
@@ -16,7 +15,6 @@ import com.tencent.rmonitor.base.plugin.listener.ICustomDataCollector;
 import com.tencent.rmonitor.base.plugin.listener.ICustomDataCollectorForIssue;
 import com.tencent.rmonitor.custom.ICustomDataEditor;
 import com.tencent.rmonitor.custom.ICustomDataEditorForIssue;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -56,8 +54,18 @@ public class BuglyWrapper {
     }
 
     public void initBugly(Application application) {
+        // Android体验Demo
         String appKey = "1e5ab6b3-b6fa-4f9b-a3c2-743d31dffe86";
         String appID = "a278f01047";
+
+        // 测试流量1
+//        String appKey = "7558e98e-2280-4889-9805-25fcedfd21b7";
+//        String appID = "75f820edad";
+
+        // 测试流量2
+//        String appKey = "5d2207fc-aabe-4a4a-abc0-9f4c1b848b1d";
+//        String appID = "4a01620959";
+
         BuglyBuilder buglyBuilder = new BuglyBuilder(appID, appKey);
 
         buglyBuilder.userId = getUserID();
@@ -87,7 +95,7 @@ public class BuglyWrapper {
     }
 
     private String getUserID() {
-        return "10000" + random.nextInt();
+        return "100001";
     }
 
     private String getDeviceID(Application application) {
@@ -100,11 +108,11 @@ public class BuglyWrapper {
     }
 
     private String getAppVersion() {
-        return "1.0.0";
+        return "1.4.4";
     }
 
     private String getBuildNumber() {
-        return "1";
+        return "2";
     }
 
     private File getCustomFilePath(Application application) {
